@@ -2,7 +2,7 @@ import { prisma } from "../config/database";
 import bcrypt from "bcrypt";
 
 export async function getUserByEmail(email: string) {
-    return await prisma.users.findMany({
+    return await prisma.users.findFirst({
         where:{
             email
         }
