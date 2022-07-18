@@ -1,7 +1,8 @@
 import { Notes } from "@prisma/client";
 import { checkIfTitleAlreadyInUse } from "../repositories/checkIfTitleAlreadyInUse";
 import { createNote } from "../repositories/createNote";
-import { getDataByUserId } from "../repositories/getData";
+import { getDataByCredentialId, getDataByUserId } from "../repositories/getData";
+import checkOwnership from "../utils/checkOwnership";
 
 export async function createNoteService(body: Omit<Notes, "id" | "userId"> , userId: number) {
     await checkIfTitleAlreadyInUse(body.title, userId, "notes");
@@ -18,3 +19,15 @@ export async function getAllNotesServices(userId: number) {
     }
     return result;
 }; 
+
+export async function getNoteByIdService(userId: number, noteId: number) {
+    const result = await getDataByCredentialId(userId, "notes") as Notes;
+    if(!result){
+        throw{
+            status: 404,
+            message: "Could not find the note!"
+        }
+    }
+    checkOwnership(userId, result);
+    return result;
+}

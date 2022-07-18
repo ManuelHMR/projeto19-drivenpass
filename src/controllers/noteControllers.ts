@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createNoteService, getAllNotesServices } from "../services/noteServices";
+import { createNoteService, getAllNotesServices, getNoteByIdService } from "../services/noteServices";
 
 export async function createNote(req: Request, res: Response) {
     const { userId } = res.locals;
@@ -14,7 +14,10 @@ export async function getNotesController(req: Request, res: Response) {
 };
 
 export async function getNoteByIdController(req: Request, res: Response) {
-    // return res.send(result)
+    const { userId } = res.locals;
+    const noteId = req.params.id;
+    const result = await getNoteByIdService(parseInt(userId), parseInt(noteId));
+    return res.send(result)
 };
 
 export async function deleteNoteController(req: Request, res: Response) {
