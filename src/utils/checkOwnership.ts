@@ -1,6 +1,6 @@
-import { Credentials, Notes } from "@prisma/client"
+import { Cards, Credentials, Notes } from "@prisma/client"
 
-export default function checkOwnership(userId: number, result: Credentials | Notes){
+export default function checkOwnership(userId: number, result: Credentials | Notes | Cards){
     if(result.userId !== userId){
         throw{
             status: 401,
