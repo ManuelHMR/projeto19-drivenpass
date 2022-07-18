@@ -24,12 +24,13 @@ export async function getAllCardsServices(userId: number) {
     }
     result.map(credential => {
         credential.password = decryptData(credential.password)
+        credential.cvc = decryptData(credential.cvc)
     })
     return result;
 };
 
-export async function getCardByIdService(userId: number, noteId: number) {
-    const result = await getDataByCredentialId(userId, "notes") as Cards;
+export async function getCardByIdService(userId: number, cardId: number) {
+    const result = await getDataByCredentialId(cardId, "cards") as Cards;
     if(!result){
         throw{
             status: 404,
@@ -37,7 +38,7 @@ export async function getCardByIdService(userId: number, noteId: number) {
         }
     }
     checkOwnership(userId, result);
-    const decrypted = {...result, password: decryptData(result.password)}
+    const decrypted = {...result, password: decryptData(result.password), cvc: decryptData(result.cvc)}
     return decrypted;
 };
 

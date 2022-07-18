@@ -15,7 +15,7 @@ export async function getAllCardsCOntroller(req: Request, res: Response){
 
 export async function getCardByIdController(req: Request, res: Response){
     const { userId } = res.locals;
-    const cardId = req.params.id;    
+    const cardId = req.params.id;  
     const result = await getCardByIdService(parseInt(userId), parseInt(cardId));
     return res.send(result);
 };
