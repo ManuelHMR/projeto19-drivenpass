@@ -7,7 +7,7 @@ const cardSchema = joi.object({
     cvc: joi.string().pattern(/[0-9]$/).min(3).max(3).required(),
     password: joi.string().pattern(/[0-9]$/).min(4).max(6).required(),
     isVirtual: joi.boolean().required(),
-    type: joi.string().valid('debit', 'credit', 'debitAndCredit').required()
+    type: joi.string().valid('CREDIT', 'DEBIT', 'BOTH').required()
 });
 
 export default cardSchema;
