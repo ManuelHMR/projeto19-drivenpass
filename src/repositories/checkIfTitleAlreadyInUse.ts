@@ -21,7 +21,7 @@ export async function checkIfTitleAlreadyInUse(title: string, userId: number, ta
     if(result){
         throw{
             status: 409,
-            message: "Title Already in Use"
+            message: "Title already in Use"
         };
     };
     return;
