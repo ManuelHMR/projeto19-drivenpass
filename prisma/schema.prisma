@@ -15,6 +15,7 @@ model Users {
   email String @unique
   password String
   credentials Credentials[]
+  notes Notes[]
 }
 
 model Credentials {
@@ -23,6 +24,14 @@ model Credentials {
   name String
   password String
   title String
+  userId Int
+  user Users @relation(fields: [userId], references: [id])
+}
+
+model Notes {
+  id Int @id @default(autoincrement())
+  title String
+  content String
   userId Int
   user Users @relation(fields: [userId], references: [id])
 }

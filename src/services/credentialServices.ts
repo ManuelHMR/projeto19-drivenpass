@@ -9,7 +9,7 @@ import encryptData from "../utils/encrypt";
 
 
 export async function createCredentialsServices(body : Omit<Credentials, "id"|"userId">, userId : number) {
-    await checkIfTitleAlreadyInUse(body.title, userId);
+    await checkIfTitleAlreadyInUse(body.title, userId, "credentials");
     const passwordHash = encryptData(body.password);
     body = {...body, password: passwordHash};
     return await createCredential(body, userId);
