@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createCredentialsServices, getCredentialsServices, getCrendentialByIdServices } from "../services/credentialServices";
+import { createCredentialsServices, deleteCredentialService, getCredentialsServices, getCrendentialByIdServices } from "../services/credentialServices";
 
 export async function credentialController(req: Request, res: Response) {
     const { userId } = res.locals; 
@@ -18,4 +18,11 @@ export async function getCredentialByIdController(req: Request, res: Response) {
     const credentialId = req.params.id;
     const result = await getCrendentialByIdServices(parseInt(userId), parseInt(credentialId));
     return res.send(result);
+};
+
+export async function deleteCredential(req: Request, res: Response) {
+    const { userId } = res.locals;
+    const credentialId = req.params.id;
+    await deleteCredentialService(parseInt(userId), parseInt(credentialId));
+    return res.sendStatus(200);
 };

@@ -1,6 +1,7 @@
 import { Credentials } from "@prisma/client";
 import { checkIfTitleAlreadyInUse } from "../repositories/checkIfTitleAlreadyInUse";
 import { createCredential } from "../repositories/createCredential";
+import { deleteCredential } from "../repositories/deleteCredential";
 import { getCredentialByCredentialId, getCredentialsByUserId } from "../repositories/getCredentials";
 import checkOwnership from "../utils/checkOwnership";
 import decryptData from "../utils/decrypt";
@@ -40,3 +41,16 @@ export async function getCrendentialByIdServices(userId: number, credentialId: n
     const decrypted = {...result, password: decryptData(result.password)}
     return decrypted;
 };
+
+export async function deleteCredentialService(userId: number, credentialId: number) {
+    let result = await getCredentialByCredentialId(credentialId);
+    if(!result){
+        throw{
+            status: 404,
+            message: "Credential not found!"
+        }
+    };
+    checkOwnership(userId, result);
+    await deleteCredential(credentialId);
+    return 
+}
