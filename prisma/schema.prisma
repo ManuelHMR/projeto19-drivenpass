@@ -16,6 +16,7 @@ model Users {
   password String
   credentials Credentials[]
   notes Notes[]
+  cards Cards[]
 }
 
 model Credentials {
@@ -36,3 +37,22 @@ model Notes {
   user Users @relation(fields: [userId], references: [id])
 }
 
+model Cards {
+  id              Int @id @default(autoincrement())
+  title String
+  name            String
+  number          String
+  expirationDate  String
+  cvc             String
+  password        String
+  isVirtual      Boolean
+  type            cardTypes
+  user Users @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+enum cardTypes {
+  CREDIT
+  DEBIT
+  BOTH
+}
