@@ -1,7 +1,7 @@
 import { Credentials } from "@prisma/client";
 import { checkIfTitleAlreadyInUse } from "../repositories/checkIfTitleAlreadyInUse";
-import { createCredential } from "../repositories/createCredential";
-import { deleteCredential } from "../repositories/deleteCredential";
+import { insertData } from "../repositories/insertData";
+import { deleteData } from "../repositories/deleteData";
 import { getDataByCredentialId, getDataByUserId } from "../repositories/getData";
 import checkOwnership from "../utils/checkOwnership";
 import decryptData from "../utils/decrypt";
@@ -11,8 +11,8 @@ import encryptData from "../utils/encrypt";
 export async function createCredentialsServices(body : Omit<Credentials, "id"|"userId">, userId : number) {
     await checkIfTitleAlreadyInUse(body.title, userId, "credentials");
     const passwordHash = encryptData(body.password);
-    body = {...body, password: passwordHash};
-    return await createCredential(body, userId);
+    const data = {...body, password: passwordHash, userId};
+    return await insertData(data, "credentials");
 };
 
 export async function getCredentialsServices(id: number) {
@@ -51,6 +51,6 @@ export async function deleteCredentialService(userId: number, credentialId: numb
         }
     };
     checkOwnership(userId, result);
-    await deleteCredential(credentialId, "credentials");
+    await deleteData(credentialId, "credentials");
     return 
 }

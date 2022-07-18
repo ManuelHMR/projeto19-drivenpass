@@ -1,4 +1,4 @@
-import joi, { string } from 'joi';
+import joi from 'joi';
 
 const noteSchema = joi.object({
   title: joi.string().max(50).required(),

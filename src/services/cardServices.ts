@@ -1,8 +1,8 @@
 import { Cards } from "@prisma/client";
 import { checkIfTitleAlreadyInUse } from "../repositories/checkIfTitleAlreadyInUse";
-import { createCard } from "../repositories/createCard";
-import { deleteCredential } from "../repositories/deleteCredential";
+import { deleteData } from "../repositories/deleteData";
 import { getDataByCredentialId, getDataByUserId } from "../repositories/getData";
+import { insertData } from "../repositories/insertData";
 import checkOwnership from "../utils/checkOwnership";
 import decryptData from "../utils/decrypt";
 import encryptData from "../utils/encrypt";
@@ -11,7 +11,8 @@ export async function createCardServices(body : Omit<Cards, "id" | "userId">,use
     await checkIfTitleAlreadyInUse(body.title, userId, "cards");
     const passHash = encryptData(body.password);
     const cvcHash = encryptData(body.cvc);
-    return await createCard(body, userId, passHash, cvcHash);
+    const data = {...body, password: passHash, cvc: cvcHash, userId}
+    return await insertData(data, "cards");
 };
 
 export async function getAllCardsServices(userId: number) {
@@ -47,10 +48,10 @@ export async function deleteCardService(userId: number, noteId: number) {
     if(!result){
         throw{
             status: 404,
-            message: "Could not find the note!"
+            message: "Could not find the card!"
         }
     };
     checkOwnership(userId, result);
-    await deleteCredential(noteId,"cards");
+    await deleteData(noteId, "cards");
     return;
 };

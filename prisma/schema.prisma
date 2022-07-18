@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,44 +8,54 @@ datasource db {
 }
 
 model Users {
-  id Int @id @default(autoincrement())
-  email String @unique
-  password String
+  id          Int           @id @default(autoincrement())
+  email       String        @unique
+  password    String
+  cards       Cards[]
   credentials Credentials[]
-  notes Notes[]
-  cards Cards[]
+  notes       Notes[]
+  wifis       Wifis[]
 }
 
 model Credentials {
-  id Int @id @default(autoincrement())
-  url String 
-  name String
+  id       Int    @id @default(autoincrement())
+  url      String
+  name     String
   password String
-  title String
-  userId Int
-  user Users @relation(fields: [userId], references: [id])
+  title    String
+  userId   Int
+  user     Users  @relation(fields: [userId], references: [id])
 }
 
 model Notes {
-  id Int @id @default(autoincrement())
-  title String
+  id      Int    @id @default(autoincrement())
+  title   String
   content String
-  userId Int
-  user Users @relation(fields: [userId], references: [id])
+  userId  Int
+  user    Users  @relation(fields: [userId], references: [id])
 }
 
 model Cards {
-  id              Int @id @default(autoincrement())
-  title String
-  name            String
-  number          String
-  expirationDate  String
-  cvc             String
-  password        String
+  id             Int       @id @default(autoincrement())
+  name           String
+  number         String
+  expirationDate String
+  cvc            String
+  password       String
   isVirtual      Boolean
-  type            cardTypes
-  user Users @relation(fields: [userId], references: [id])
-  userId Int
+  type           cardTypes
+  userId         Int
+  title          String
+  user           Users     @relation(fields: [userId], references: [id])
+}
+
+model Wifis {
+  id       Int    @id @default(autoincrement())
+  title    String
+  name     String
+  password String
+  userId   Int
+  user     Users  @relation(fields: [userId], references: [id])
 }
 
 enum cardTypes {
