@@ -4,7 +4,7 @@ export default function checkOwnership(userId: number, result: Credentials | Not
     if(result.userId !== userId){
         throw{
             status: 401,
-            message: "Credential is not yours!"
+            message: "This data is not yours!"
         }
     };
     return;
