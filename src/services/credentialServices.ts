@@ -51,6 +51,6 @@ export async function deleteCredentialService(userId: number, credentialId: numb
         }
     };
     checkOwnership(userId, result);
-    await deleteCredential(credentialId);
+    await deleteCredential(credentialId, "credentials");
     return 
 }

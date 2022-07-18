@@ -1,6 +1,7 @@
 import { Notes } from "@prisma/client";
 import { checkIfTitleAlreadyInUse } from "../repositories/checkIfTitleAlreadyInUse";
 import { createNote } from "../repositories/createNote";
+import { deleteCredential } from "../repositories/deleteCredential";
 import { getDataByCredentialId, getDataByUserId } from "../repositories/getData";
 import checkOwnership from "../utils/checkOwnership";
 
@@ -30,4 +31,17 @@ export async function getNoteByIdService(userId: number, noteId: number) {
     }
     checkOwnership(userId, result);
     return result;
-}
+};
+
+export async function deleteNoteService(userId: number, noteId: number){
+    const result = await getDataByCredentialId(userId, "notes") as Notes;
+    if(!result){
+        throw{
+            status: 404,
+            message: "Could not find the note!"
+        }
+    };
+    checkOwnership(userId, result);
+    await deleteCredential(noteId,"notes");
+    return;
+};

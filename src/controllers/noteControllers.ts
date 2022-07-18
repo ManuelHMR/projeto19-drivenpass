@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createNoteService, getAllNotesServices, getNoteByIdService } from "../services/noteServices";
+import { createNoteService, deleteNoteService, getAllNotesServices, getNoteByIdService } from "../services/noteServices";
 
 export async function createNote(req: Request, res: Response) {
     const { userId } = res.locals;
@@ -21,6 +21,8 @@ export async function getNoteByIdController(req: Request, res: Response) {
 };
 
 export async function deleteNoteController(req: Request, res: Response) {
-    
+    const { userId } = res.locals;
+    const noteId = req.params.id;
+    await deleteNoteService(parseInt(userId), parseInt(noteId));
     return res.sendStatus(200);
 };
